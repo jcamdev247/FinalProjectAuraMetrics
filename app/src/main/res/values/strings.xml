@@ -5,5 +5,15 @@
     <string name="bFPercentageLabel">Body Fat Percentage Calculator</string>
     <string name="analyzeLiftsLabel">Analyze Lifts</string>
     <string name="strengthStandardsLabel">Strength Standards</string>
-
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="submit_measurements_button">Submit Measurements</string>
+    <string name="enter_user_waist_circumference_label">Enter User Waist Circumference</string>
+    <string name="enter_user_neck_circumference_label">Enter User Neck Circumference</string>
+    <string name="enter_user_height_label">Enter User Height</string>
+    <string name="enter_user_weight_label">Enter User Weight</string>
+    <string name="enter_user_age_label">Enter User Age</string>
+    <string name="instruction_lable_3">* For women only: Measure the circumference of the subject\'s hips at the largest horizontal measure.</string>
+    <string name="instruction_lable_2">* Measure the circumference of the subject\'s neck starting below the larynx, with the tape sloping downward to the front. The subject should avoid flaring their neck outwards.</string>
+    <string name="instruction_lable_1">* Measure the circumference of the subject\'s waist at a horizontal level around the navel for men, and at the level with the smallest width for women. Ensure that the subject does not pull their stomach inwards to obtain accurate measurements.</string>
 </resources>

@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
             FinalProjectTheme {
                 Scaffold(modifier = Modifier.fillMaxSize(), topBar = @Composable {}) { innerPadding ->
                     Box(modifier = Modifier.fillMaxSize().padding(innerPadding)){
-                        Background(modifier = Modifier.padding(innerPadding))
+                        Background(modifier = Modifier.padding(innerPadding, ), true)
                         CreateScreen(modifier = Modifier.padding(innerPadding))
                     }
                 }

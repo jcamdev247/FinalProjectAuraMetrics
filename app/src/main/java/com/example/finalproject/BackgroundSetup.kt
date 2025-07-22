@@ -23,7 +23,7 @@ import com.example.finalproject.ui.theme.FinalProjectTheme
 
 
 @Composable
-fun BackGroundImage(modifier: Modifier = Modifier) {
+fun BackGroundImage(modifier: Modifier = Modifier, displayDecorations: Boolean) {
     val backgroundImagePicture = painterResource(R.drawable.background)
 
     Image(
@@ -33,41 +33,40 @@ fun BackGroundImage(modifier: Modifier = Modifier) {
         modifier = Modifier.fillMaxSize()
     )
 
-    Box(
-        modifier = Modifier.Companion
-            .fillMaxWidth()
-            .padding(top = 20.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = stringResource(R.string.app_name),
-            modifier = modifier,
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.displayLarge,
-            color = MaterialTheme.colorScheme.onPrimary
-        )
+
+    if(displayDecorations){
+        Box(
+            modifier = Modifier.Companion
+                .fillMaxWidth()
+                .padding(top = 20.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = stringResource(R.string.app_name),
+                modifier = modifier,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.displayLarge,
+                color = MaterialTheme.colorScheme.onPrimary
+            )
+        }
+
+        Column(modifier = modifier.fillMaxSize().padding(top = 30.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Top){
+            val logoImage = painterResource(R.drawable.kingkailogo200highdensity)
+
+            Image(
+                painter = logoImage,
+                contentDescription = "logo for application",
+                contentScale = ContentScale.FillHeight,
+                modifier = Modifier.size(300.dp)
+            )
+        }
     }
-
-
-    Column(modifier = modifier.fillMaxSize().padding(top = 30.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Top){
-        val logoImage = painterResource(R.drawable.kingkailogo200highdensity)
-
-        Image(
-            painter = logoImage,
-            contentDescription = "logo for application",
-            contentScale = ContentScale.FillHeight,
-            modifier = Modifier.size(300.dp)
-        )
-
-    }
-
-
 }
 
 @Preview(showBackground = true)
 @Composable
 fun SetUpBackGround() {
     FinalProjectTheme {
-        BackGroundImage(modifier = Modifier)
+        BackGroundImage(modifier = Modifier, true)
     }
 }
