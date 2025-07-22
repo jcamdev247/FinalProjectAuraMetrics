@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">AuraMetrics</string>
+    <string name="oneRepMaxLabel">One Rep Max Calculator</string>
+    <string name="tDEELabel">Total Daily Energy Expenditure</string>
+    <string name="bFPercentageLabel">Body Fat Percentage Calculator</string>
+    <string name="analyzeLiftsLabel">Analyze Lifts</string>
+    <string name="strengthStandardsLabel">Strength Standards</string>
+
 </resources>
