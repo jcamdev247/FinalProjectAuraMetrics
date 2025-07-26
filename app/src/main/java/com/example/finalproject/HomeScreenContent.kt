@@ -24,7 +24,9 @@ fun CreateScreenUI(modifier: Modifier = Modifier) {
             Text(text = stringResource(R.string.oneRepMaxLabel))
         }
 
-        FilledTonalButton(onClick = { }) {
+        FilledTonalButton(onClick = {
+
+        }) {
             Text(text = stringResource(R.string.bFPercentageLabel))
         }
 
@@ -41,6 +43,8 @@ fun CreateScreenUI(modifier: Modifier = Modifier) {
         }
     }
 }
+
+
 
 @Preview(showBackground = true)
 @Composable

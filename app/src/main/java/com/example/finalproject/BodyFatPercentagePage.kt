@@ -13,71 +13,54 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.finalproject.ui.theme.FinalProjectTheme
 
-
 @Composable
-fun BodyFatPercentagePage(modifier: Modifier = Modifier) {
-    val male = stringResource(R.string.male)
-    val female = stringResource(R.string.female)
-    var userGenderInput by remember { mutableStateOf("") }
-    var userAgeInput by remember { mutableStateOf("") }
-    var userWeightInput by remember { mutableStateOf("") }
-    var userHeightInput by remember { mutableStateOf("") }
-    var userNeckInput by remember { mutableStateOf("") }
-    var userWaistInput by remember { mutableStateOf("") }
+fun BodyFatPercentagePage(
+    modifier: Modifier = Modifier,
+    viewModel: BodyFatCalculationViewModel = viewModel(),
+) {
+    val maleString = stringResource(R.string.male)
+    val femaleString = stringResource(R.string.female)
     val rowSpacer: Dp = 10.dp
-    val columnTopPadding: Dp = 20.dp
-    val columnBottomPadding: Dp = 112.dp
+    val columnBottomPadding: Dp = 100.dp
+    val uiState by viewModel.uiState.collectAsState()
 
     BackGroundImage(modifier = modifier, false)
-    Column(
 
-        modifier = modifier
-            .fillMaxSize()
-            .padding(columnTopPadding),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top
-    ){
-        Text(
-            text = stringResource(R.string.instruction_lable_1)
-        )
-        Spacer(modifier = Modifier.height(rowSpacer))
-        Text(
-            text = stringResource(R.string.instruction_lable_2)
-        )
-        Spacer(modifier = Modifier.height(rowSpacer))
-        Text(
-            text = stringResource(R.string.instruction_lable_3)
-        )
-    }
+    ColumnSpacerHeightMethod(rowSpacer)
 
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(bottom = columnBottomPadding),
+            .padding(bottom = columnBottomPadding)
+            .padding(rowSpacer),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Bottom
     ) {
+
+        SetupBodyFatInstructions(rowSpacer, uiState.submitButtonPressed, uiState)
+
+Spacer(modifier = Modifier.width(rowSpacer))
+
         Row(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = male)
-            RadioButton(selected = false, onClick = { userGenderInput = male })
+            Text(text = maleString)
+            RadioButton(selected = uiState.userGenderInput == maleString, onClick = { viewModel.updateGender(maleString)})
 
-            Text(text = female)
-            RadioButton(selected = false, onClick = { userGenderInput = female })
+            Text(text = femaleString)
+            RadioButton(selected = uiState.userGenderInput == femaleString, onClick = { viewModel.updateGender(femaleString)})
         }
 
         Row(
@@ -88,9 +71,9 @@ fun BodyFatPercentagePage(modifier: Modifier = Modifier) {
                 text = stringResource(R.string.enter_user_age_label)
             )
 
-            Spacer(modifier = Modifier.width(rowSpacer))
+    Spacer(modifier = Modifier.width(rowSpacer))
 
-            TextField(value = userAgeInput, onValueChange = { newValue -> userAgeInput = newValue })
+            TextField(value = uiState.userAgeInput ?: "", onValueChange = { newValue -> viewModel.updateAge(newValue) })
         }
 
         Row(
@@ -101,10 +84,10 @@ fun BodyFatPercentagePage(modifier: Modifier = Modifier) {
                 text = stringResource(R.string.enter_user_weight_label)
             )
 
-            Spacer(modifier = Modifier.width(rowSpacer))
+    Spacer(modifier = Modifier.width(rowSpacer))
 
             TextField(
-                value = userWeightInput, onValueChange = { newValue -> userWeightInput = newValue })
+                value = uiState.userWeightInput ?: "", onValueChange = { newValue -> viewModel.updateWeight(newValue)})
         }
 
         Row(
@@ -115,10 +98,10 @@ fun BodyFatPercentagePage(modifier: Modifier = Modifier) {
                 text = stringResource(R.string.enter_user_height_label)
             )
 
-            Spacer(modifier = Modifier.width(rowSpacer))
+    Spacer(modifier = Modifier.width(rowSpacer))
 
             TextField(
-                value = userHeightInput, onValueChange = { newValue -> userHeightInput = newValue })
+                value = uiState.userHeightInput ?: "", onValueChange = { newValue -> viewModel.updateHeight(newValue) })
         }
 
         Row(
@@ -128,12 +111,13 @@ fun BodyFatPercentagePage(modifier: Modifier = Modifier) {
             Text(
                 text = stringResource(R.string.enter_user_neck_circumference_label)
             )
-
-            Spacer(modifier = Modifier.width(rowSpacer))
+    Spacer(modifier = Modifier.width(rowSpacer))
 
             TextField(
-                value = userNeckInput, onValueChange = { newValue -> userNeckInput = newValue })
+                value = uiState.userNeckInput ?: "", onValueChange = { newValue -> viewModel.updateNeck(newValue)})
+
         }
+
         Row(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
@@ -142,16 +126,67 @@ fun BodyFatPercentagePage(modifier: Modifier = Modifier) {
                 text = stringResource(R.string.enter_user_waist_circumference_label)
             )
 
-            Spacer(modifier = Modifier.width(rowSpacer))
+    Spacer(modifier = Modifier.width(rowSpacer))
 
             TextField(
-                value = userWaistInput, onValueChange = { newValue -> userWaistInput = newValue })
+                value = uiState.userWaistInput ?: "", onValueChange = { newValue -> viewModel.updateWaist(newValue)})
         }
 
-        FilledTonalButton(onClick = { }) {
+        if (uiState.userGenderInput == "Female") {
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(R.string.enter_user_Hip_circumference_label)
+                )
+                Spacer(modifier = Modifier.width(rowSpacer))
+                TextField(
+                    value = uiState.userHipInput ?: "", onValueChange = { newValue -> viewModel.updateHip(newValue )}
+                )
+            }
+        }
+
+Spacer(modifier = Modifier.width(rowSpacer))
+
+        FilledTonalButton( onClick = {
+            viewModel.updateSubmitButtonPressed()
+            viewModel.calculateBodyFatPercentageSwitch()
+            }) {
             Text(text = stringResource(R.string.submit_measurements_button))
         }
     }
+}
+
+@Composable
+fun SetupBodyFatInstructions(rowSpacer: Dp, submitted: Boolean, uiState: BodyFatCalculationState) {
+    if (!submitted) {
+        Text(
+            text = stringResource(R.string.instruction_lable_1)
+        )
+        ColumnSpacerHeightMethod(rowSpacer)
+        Text(
+            text = stringResource(R.string.instruction_lable_2)
+        )
+        ColumnSpacerHeightMethod(rowSpacer)
+        Text(
+            text = stringResource(R.string.instruction_lable_3)
+        )
+    } else {
+        val calculatedBfp = uiState.bfp ?: ""
+        Text("BFP: $calculatedBfp ")
+    }
+}
+
+
+@Composable
+fun RowSpacerWidthMethod(rowSpacer: Dp) {
+    Spacer(modifier = Modifier.width(rowSpacer))
+}
+
+@Composable
+fun ColumnSpacerHeightMethod(rowSpacer: Dp) {
+    Spacer(modifier = Modifier.height(rowSpacer))
 }
 
 @Preview(showBackground = true)

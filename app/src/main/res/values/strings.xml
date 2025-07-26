@@ -16,4 +16,5 @@
     <string name="instruction_lable_3">* For women only: Measure the circumference of the subject\'s hips at the largest horizontal measure.</string>
     <string name="instruction_lable_2">* Measure the circumference of the subject\'s neck starting below the larynx, with the tape sloping downward to the front. The subject should avoid flaring their neck outwards.</string>
     <string name="instruction_lable_1">* Measure the circumference of the subject\'s waist at a horizontal level around the navel for men, and at the level with the smallest width for women. Ensure that the subject does not pull their stomach inwards to obtain accurate measurements.</string>
+    <string name="enter_user_Hip_circumference_label">Enter User Hip Circumference</string>
 </resources>

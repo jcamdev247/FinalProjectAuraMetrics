@@ -33,7 +33,6 @@ fun BackGroundImage(modifier: Modifier = Modifier, displayDecorations: Boolean) 
         modifier = Modifier.fillMaxSize()
     )
 
-
     if(displayDecorations){
         Box(
             modifier = Modifier.Companion

@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.finalproject.ui.theme.FinalProjectTheme
 import com.example.finalproject.BackGroundImage as Background
-import com.example.finalproject.CreateScreenUI as CreateScreen
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,7 +22,7 @@ class MainActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize(), topBar = @Composable {}) { innerPadding ->
                     Box(modifier = Modifier.fillMaxSize().padding(innerPadding)){
                         Background(modifier = Modifier.padding(innerPadding, ), true)
-                        CreateScreen(modifier = Modifier.padding(innerPadding))
+                        BodyFatPercentagePage(modifier = Modifier.fillMaxSize())
                     }
                 }
             }
