@@ -6,31 +6,21 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlin.math.log10
-
-//
-//data class BodyFatCalculationState(
-//    val userGenderInput: String? = null,
-//    val userAgeInput: String? = null,
-//    val userWeightInput: String? = null,
-//    val userHeightInput: String? = null,
-//    val userNeckInput: String? = null,
-//    val userWaistInput: String? = null,
-//    val userHipInput: String? = null,
-//    public val bfp: Double? = null,
-//    val errorMessage: String? = null,
-//)
+import kotlin.math.round
 
 data class BodyFatCalculationState(
-    val userGenderInput: String? = "male",
-    val userAgeInput: String? = "25",
-    val userWeightInput: String? = "36",
-    val userHeightInput: String? = "60",
-    val userNeckInput: String? = "20",
-    val userWaistInput: String? = "36",
-    val userHipInput: String? = "0",
-    val submitButtonPressed: Boolean = false,
+    val userGenderInput: String? = null,
+    val userAgeInput: String? = null,
+    val userWeightInput: String? = null,
+    val userHeightInput: String? = null,
+    val userNeckInput: String? = null,
+    val userWaistInput: String? = null,
+    val userHipInput: String? = null,
     val bfp: Double? = null,
+    val totalBodyFatMass: Double? = null,
+    val leanBodyMass: Double? = null,
     val errorMessage: String? = null,
+    val submitButtonPressed: Boolean = false,
 )
 
 class BodyFatCalculationViewModel : ViewModel() {
@@ -85,15 +75,16 @@ class BodyFatCalculationViewModel : ViewModel() {
         }
     }
 
+
     fun isNumberInvalidOrLessThan0(number: Double?): Boolean {
         return (number == null || number <= 0.0)
     }
+
 
     fun maleBodyFatCalculation(currentState: BodyFatCalculationState): Double? {
         val waistCm: Double? = currentState.userWaistInput?.toDoubleOrNull()
         val neckCm: Double? = currentState.userNeckInput?.toDoubleOrNull()
         val heightCm: Double? = currentState.userHeightInput?.toDoubleOrNull()
-
 
         if (isNumberInvalidOrLessThan0(waistCm) || isNumberInvalidOrLessThan0(neckCm) || isNumberInvalidOrLessThan0(
                 heightCm
@@ -106,12 +97,12 @@ class BodyFatCalculationViewModel : ViewModel() {
         val validNeck = neckCm!!
         val validHeight = heightCm!!
 
-        val diff = validWaist - validNeck
+        val waistNeckDiff = validWaist - validNeck
 
-        if (diff <= 0) {
+        if (waistNeckDiff <= 0) {
             return null
         }
-        return 86.010 * log10(diff) - 70.041 * log10(validHeight) + 36.76
+        return 86.010 * log10(waistNeckDiff) - 70.041 * log10(validHeight) + 36.76
     }
 
     fun femaleBodyFatCalculation(currentState: BodyFatCalculationState): Double? {
@@ -122,9 +113,7 @@ class BodyFatCalculationViewModel : ViewModel() {
         val hipCm: Double? = currentState.userHipInput?.toDoubleOrNull()
 
 
-        if (isNumberInvalidOrLessThan0(waistCm) || isNumberInvalidOrLessThan0(neckCm) || isNumberInvalidOrLessThan0(
-                heightCm
-            )
+        if (isNumberInvalidOrLessThan0(waistCm) || isNumberInvalidOrLessThan0(neckCm) || isNumberInvalidOrLessThan0(heightCm) || isNumberInvalidOrLessThan0(hipCm)
         ) {
             return null
         }
@@ -163,12 +152,23 @@ class BodyFatCalculationViewModel : ViewModel() {
                         currentErrorMessage = "Invalid input"
                     }
                 }
-
                 else -> {
                     currentErrorMessage = "Invalid input"
                 }
             }
-            currentState.copy(bfp = calculatedBfp, errorMessage = currentErrorMessage)
+
+            val finalBfp: Double? = calculatedBfp?.let { round(it * 100.0)/100.0 }
+
+            var newTotalBodyFatMass: Double? = null
+            var newLeanBodyMass: Double? = null
+
+            if (finalBfp != null) {
+                val totalWeight = currentState.userWeightInput?.toDoubleOrNull()!!
+                newTotalBodyFatMass = totalWeight.times(finalBfp.div(100))
+                newLeanBodyMass = totalWeight.minus(newTotalBodyFatMass!!)
+            }
+
+            currentState.copy(bfp = round(calculatedBfp ?: 0.0), errorMessage = currentErrorMessage, totalBodyFatMass = newTotalBodyFatMass, leanBodyMass = newLeanBodyMass)
         }
     }
 

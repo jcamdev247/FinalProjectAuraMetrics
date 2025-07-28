@@ -18,16 +18,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.finalproject.ui.theme.FinalProjectTheme
 
 @Composable
 fun BodyFatPercentagePage(
     modifier: Modifier = Modifier,
-    viewModel: BodyFatCalculationViewModel = viewModel(),
+    viewModel: BodyFatCalculationViewModel = viewModel()
 ) {
     val maleString = stringResource(R.string.male)
     val femaleString = stringResource(R.string.female)
@@ -50,7 +53,7 @@ fun BodyFatPercentagePage(
 
         SetupBodyFatInstructions(rowSpacer, uiState.submitButtonPressed, uiState)
 
-Spacer(modifier = Modifier.width(rowSpacer))
+        Spacer(modifier = Modifier.width(rowSpacer))
 
         Row(
             horizontalArrangement = Arrangement.Center,
@@ -150,6 +153,11 @@ Spacer(modifier = Modifier.width(rowSpacer))
 Spacer(modifier = Modifier.width(rowSpacer))
 
         FilledTonalButton( onClick = {
+
+            if (uiState.userGenderInput == null || uiState.userAgeInput == null || uiState.userWeightInput == null || uiState.userHeightInput == null || uiState.userWaistInput == null || uiState.userNeckInput == null || uiState.userHipInput == null && uiState.userGenderInput == "Female") {
+                return@FilledTonalButton
+            }
+
             viewModel.updateSubmitButtonPressed()
             viewModel.calculateBodyFatPercentageSwitch()
             }) {
@@ -160,28 +168,28 @@ Spacer(modifier = Modifier.width(rowSpacer))
 
 @Composable
 fun SetupBodyFatInstructions(rowSpacer: Dp, submitted: Boolean, uiState: BodyFatCalculationState) {
+    val textStyle =TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold)
+
     if (!submitted) {
         Text(
-            text = stringResource(R.string.instruction_lable_1)
+            text = stringResource(R.string.instruction_lable_1), style = textStyle
         )
         ColumnSpacerHeightMethod(rowSpacer)
         Text(
-            text = stringResource(R.string.instruction_lable_2)
+            text = stringResource(R.string.instruction_lable_2),style = textStyle
         )
         ColumnSpacerHeightMethod(rowSpacer)
         Text(
-            text = stringResource(R.string.instruction_lable_3)
+            text = stringResource(R.string.instruction_lable_3), style = textStyle
         )
     } else {
         val calculatedBfp = uiState.bfp ?: ""
-        Text("BFP: $calculatedBfp ")
+        val totalBodyFat = uiState.totalBodyFatMass ?: ""
+        val totalLeanMass = uiState.leanBodyMass ?: ""
+        Text("BFP: $calculatedBfp ", style = textStyle)
+        Text("Total Body Fat Mass: $totalBodyFat ", style = textStyle)
+        Text("Lean Mass: $totalLeanMass ", style = textStyle)
     }
-}
-
-
-@Composable
-fun RowSpacerWidthMethod(rowSpacer: Dp) {
-    Spacer(modifier = Modifier.width(rowSpacer))
 }
 
 @Composable
